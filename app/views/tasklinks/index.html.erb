@@ -1,0 +1,44 @@
+<%- model_class = Tasklink -%>
+<div class="page-header">
+  <h2><%=t '.title', :default => model_class.model_name.human.pluralize %></h2>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:task) %></th>
+      <th><%= model_class.human_attribute_name(:application) %></th>
+      <th><%= model_class.human_attribute_name(:input_data) %></th>
+      <th><%= model_class.human_attribute_name(:output_data) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasklinks.each do |tasklink| %>
+      <tr>
+        <td><%= link_to tasklink.id, tasklink_path(tasklink) %></td>
+        <td><%= tasklink.task %></td>
+        <td><%= tasklink.application %></td>
+        <td><%= tasklink.input_data %></td>
+        <td><%= tasklink.output_data %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_tasklink_path(tasklink), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      tasklink_path(tasklink),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="form-actions">
+	<%= link_to t('.back', :default => t("helpers.links.back")),
+	              "/", :class => 'btn'  %>
+	<%= link_to t('.new', :default => t("helpers.links.new")),
+	            new_tasklink_path,
+	            :class => 'btn btn-primary' %>
+</div>

@@ -1,0 +1,230 @@
+
+
+<ul class="nav nav-tabs">
+	<li><a href="#tab1" data-toggle="tab">リストを表示</a></li>
+	<li><a href="#tab2" data-toggle="tab">図を表示</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane" id="tab1">
+	<!-- tab1の中 -->
+		<!-- STROY LIST ------------------------------------------- -->
+		<span class="label"><i class="icon-book"></i> STORY</span>
+		<ul class="nav nav-list">
+			<% @stories.each do |story| %>
+				<div>
+					<%= link_to story.name, story %>
+				</div>
+			<% end %>
+		</ul>
+		<br/>
+
+		<!-- PATTERN LIST ------------------------------------------- -->
+		<span class="label"><i class="icon-file"></i> PATTERN</span>
+
+		<ul class="nav nav-list">
+			<% @patterns.each do |pattern| %>
+				<div>
+					<%= link_to pattern.name, pattern %>
+				</div>
+			<% end %>
+		</ul>
+		<br/>
+
+
+		<!-- TASK LIST ------------------------------------------- -->
+		<span class="label"><i class="icon-time"></i> TASK</span>
+
+		<ul class="nav nav-list">
+			<% @tasks.each do |task| %>
+				<div>
+					<%= link_to task.name, task %>
+				</div>
+			<% end %>
+		</ul>
+		<br/>
+
+		<!-- APPLICATION LIST ------------------------------------------- -->
+		<span class="label"><i class="icon-play-circle"></i> APPLICATION</span>
+
+		<ul class="nav nav-list">
+			<% @applications.each do |application| %>
+				<div>
+					<%= link_to application.name, application %>
+				</div>
+			<% end %>
+		</ul>
+		<br/>
+	</div>
+	<div class="tab-pane" id="tab2">
+	<!-- tab2の中 -->
+
+		<div class="row">
+			<div class="span2">
+				<span class="label"><i class="icon-book"></i> STORY</span>
+			</div>
+			<div class="span2">
+				<span class="label"><i class="icon-file"></i> PATTERN</span>
+			</div>
+			<div class="span2">
+				<span class="label"><i class="icon-time"></i> TASK</span>
+			</div>
+			<div class="span2">
+				<span class="label"><i class="icon-play-circle"></i> APPLICATION</span>
+			</div>
+		</div>
+
+		<% @stories.each do |story| %>
+			<div class="row">
+				<div class="span2">
+					<div class="btn-toolbar">
+						<div class="btn-group">
+							<button class="btn dropdown-toggle input-medium" data-toggle="dropdown"><%=story.name %> <span class="caret"></span></button>
+							<ul class="dropdown-menu">
+								<li><%= link_to "ストーリー(#{story.name})を編集", :controller => "stories", :action => "edit", :id => story.id %></li>
+								<li><%= link_to "リンクするパターンを追加", :controller => "storylinks", :action => "new" %></li>
+								<% @storylinks.each do |storylink| %>
+										<% if storylink.story == story.name %>
+											<li><%= link_to "リンクしているパターン(#{storylink.pattern})を外す", :controller => "storylinks", :action => "show", :id => storylink.id %></li>
+										<% end %>
+									<% end %>
+								<li class="divider"></li>
+								<li><a href="/">何もしない</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="span6">
+					<% @storylinks.each do |storylink| %>
+						<% if storylink.story == story.name then %>
+							<div class="row">
+								<div class="span2">
+									<div class="btn-toolbar">
+										<div class="btn-group">
+											<button class="btn dropdown-toggle input-medium" data-toggle="dropdown"><%=storylink.pattern %> <span class="caret"></span></button>
+											<ul class="dropdown-menu">
+												<% @patterns.each do |pattern| %>
+													<% if storylink.pattern == pattern.name %>
+														<li><%= link_to "パターン(#{pattern.name})を編集", :controller => "patterns", :action => "edit", :id => pattern.id %></li>
+														<li><%= link_to "リンクするタスクを追加", :controller => "patternlinks", :action => "new" %></li>
+														<% @patternlinks.each do |patternlink| %>
+															<% if patternlink.pattern == pattern.name %>
+																<li><%= link_to "リンクしているタスク(#{patternlink.active_task}, #{patternlink.passive_task})を変更", :controller => "patternlinks", :action => "edit", :id => patternlink.id %></li>
+																<li><%= link_to "リンクしているタスク(#{patternlink.active_task}, #{patternlink.passive_task})を外す", :controller => "patternlinks", :action => "show", :id => storylink.id %></li>
+															<% end %>
+														<% end %>
+													<% end %>
+												<% end %>
+												<li class="divider"></li>
+												<li><a href="/">何もしない</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="span4">
+									<% @patternlinks.each do |patternlink| %>
+										<% if patternlink.pattern == storylink.pattern then %>
+											<% if patternlink.active_task != "" then %>
+												<div class="row">
+													<div class="span2">
+														<div class="btn-toolbar">
+															<div class="btn-group">
+																<button class="btn dropdown-toggle input-medium" data-toggle="dropdown"><%=patternlink.active_task %> <span class="caret"></span></button>
+																<ul class="dropdown-menu">
+																	<% @tasks.each do |task| %>
+																		<% if patternlink.active_task == task.name %>
+																			<li><%= link_to "タスク(#{task.name})を編集", :controller => "tasks", :action => "edit", :id => task.id %></li>
+																			<li><%= link_to "リンクするアプリケーションを追加", :controller => "tasklinks", :action => "new" %></li>
+																			<% @tasklinks.each do |tasklink| %>
+																				<% if tasklink.task == task.name %>
+																					<li><%= link_to "リンクしているアプリケーション(#{tasklink.application})を外す", :controller => "tasklinks", :action => "show", :id => tasklink.id %></li>
+																				<% end %>
+																			<% end %>
+																		<% end %>
+																	<% end %>
+																	<li class="divider"></li>
+																	<li><a href="/">何もしない</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+													<div class="span2">
+														<% @tasklinks.each do |tasklink| %>
+															<% if tasklink.task == patternlink.active_task then %>
+																<div class="btn-toolbar">
+																	<div class="btn-group">
+																		<button class="btn dropdown-toggle input-medium" data-toggle="dropdown"><%=tasklink.application %> <span class="caret"></span></button>
+																		<ul class="dropdown-menu">
+																			<% @applications.each do |application| %>
+																				<% if tasklink.application == application.name %>
+																					<li><%= link_to "アプリケーション(#{application.name})を編集", :controller => "applications", :action => "edit", :id => application.id %></li>
+																				<% end %>
+																			<% end %>
+																			<li class="divider"></li>
+																			<li><a href="/">何もしない</a></li>
+																		</ul>
+																	</div>
+																</div>
+															<% end %>
+														<% end %>
+													</div>
+												</div>
+											<% end %>
+											<% if patternlink.passive_task != "" then %>
+												<div class="row">
+													<div class="span2">
+															<div class="btn-toolbar">
+																<div class="btn-group">
+																	<button class="btn dropdown-toggle input-medium" data-toggle="dropdown"><%=patternlink.passive_task %> <span class="caret"></span></button>
+																	<ul class="dropdown-menu">
+																		<% @tasks.each do |task| %>
+																			<% if patternlink.passive_task == task.name %>
+																				<li><%= link_to "タスク(#{task.name})を編集", :controller => "tasks", :action => "edit", :id => task.id %></li>
+																				<li><%= link_to "リンクするアプリケーションを追加", :controller => "tasklinks", :action => "new" %></li>
+																				<% @tasklinks.each do |tasklink| %>
+																					<% if tasklink.task == task.name %>
+																						<li><%= link_to "リンクしているアプリケーション(#{tasklink.application})を外す", :controller => "tasklinks", :action => "show", :id => tasklink.id %></li>
+																					<% end %>
+																				<% end %>
+																			<% end %>
+																		<% end %>
+																		<li class="divider"></li>
+																		<li><a href="/">何もしない</a></li>
+																	</ul>
+																</div>
+															</div>
+													</div>
+													<div class="span2">
+														<% @tasklinks.each do |tasklink| %>
+															<% if tasklink.task == patternlink.passive_task then %>
+																<div class="btn-toolbar">
+																	<div class="btn-group">
+																		<button class="btn dropdown-toggle input-medium" data-toggle="dropdown"><%=tasklink.application %> <span class="caret"></span></button>
+																		<ul class="dropdown-menu">
+																			<% @applications.each do |application| %>
+																				<% if tasklink.application == application.name %>
+																					<li><%= link_to "アプリケーション(#{application.name})を編集", :controller => "applications", :action => "edit", :id => application.id %></li>
+																				<% end %>
+																			<% end %>
+																			<li class="divider"></li>
+																			<li><a href="/">何もしない</a></li>
+																		</ul>
+																	</div>
+																</div>
+															<% end %>
+														<% end %>
+													</div>
+												</div>
+											<% end %>
+										<% end %>
+									<% end %>
+								</div>
+							</div>
+						<% end %>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+

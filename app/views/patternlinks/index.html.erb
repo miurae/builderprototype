@@ -1,0 +1,43 @@
+<%- model_class = Patternlink -%>
+<div class="page-header">
+  <h2><%=t '.title', :default => model_class.model_name.human.pluralize %></h2>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:pattern) %></th>
+      <th><%= model_class.human_attribute_name(:active_task) %></th>
+      <th><%= model_class.human_attribute_name(:passive_task) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @patternlinks.each do |patternlink| %>
+      <tr>
+        <td><%= link_to patternlink.id, patternlink_path(patternlink) %></td>
+        <td><%= patternlink.pattern %></td>
+        <td><%= patternlink.active_task %></td>
+        <td><%= patternlink.passive_task %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_patternlink_path(patternlink), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      patternlink_path(patternlink),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="form-actions">
+	<%= link_to t('.back', :default => t("helpers.links.back")),
+	              "/", :class => 'btn'  %>
+
+	<%= link_to t('.new', :default => t("helpers.links.new")),
+	            new_patternlink_path,
+	            :class => 'btn btn-primary' %>
+</div>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  pattern: MyString
+  active_task: MyString
+  passive_task: MyString
+
+two:
+  pattern: MyString
+  active_task: MyString
+  passive_task: MyString

@@ -1,0 +1,2 @@
+module StorylinksHelper
+end

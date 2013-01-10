@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  task: MyString
+  application: MyString
+  input_data: MyString
+  output_data: MyString
+
+two:
+  task: MyString
+  application: MyString
+  input_data: MyString
+  output_data: MyString

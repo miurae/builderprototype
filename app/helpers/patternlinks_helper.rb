@@ -1,0 +1,2 @@
+module PatternlinksHelper
+end
